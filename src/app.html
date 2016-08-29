@@ -1,0 +1,55 @@
+﻿<wj-flex-grid [itemsSource]="cvPaging">
+    <wj-flex-grid-column [header]="'Country'" [binding]="'country'" [isReadOnly]="true">
+        <template wjFlexGridCellTemplate [cellType]="'Cell'"  let-cell="cell">
+            <div>
+                <img src="resources/{{cell.item.country}}.png" />
+                {{cell.item.country}}
+            </div>
+        </template>
+    </wj-flex-grid-column>
+    <wj-flex-grid-column [header]="'Date'" [binding]="'date'">
+
+        <template wjFlexGridCellTemplate [cellType]="'Cell'"  let-cell="cell">
+            <div>
+                {{cell.item.date ? cell.item.date: ' . . . '}}
+            </div>
+        </template>
+
+    </wj-flex-grid-column>
+    <wj-flex-grid-column [header]="'Revenue'" [binding]="'amount'" [format]="'n0'">
+
+        <template wjFlexGridCellTemplate [cellType]="'Cell'"  let-cell="cell">
+            <div>
+                {{cell.item.amount ? cell.item.amount.toFixed(2): ' . . . '}}
+            </div>
+        </template>
+
+    </wj-flex-grid-column>
+    <wj-flex-grid-column [header]="'Active'" [binding]="'active'"></wj-flex-grid-column>
+</wj-flex-grid>
+
+<div class="btn-group">
+    <button type="button" class="btn btn-default"
+            (click)="cvPaging.moveToFirstPage()"
+            [disabled]="cvPaging.pageIndex <= 0">
+        <span class="glyphicon glyphicon-fast-backward"></span>
+    </button>
+    <button type="button" class="btn btn-default"
+            (click)="cvPaging.moveToPreviousPage()"
+            [disabled]="cvPaging.pageIndex <= 0">
+        <span class="glyphicon glyphicon-step-backward"></span>
+    </button>
+    <button type="button" class="btn btn-default" disabled style="width:100px">
+        {{cvPaging.pageIndex + 1 | number}} / {{cvPaging.pageCount | number}}
+    </button>
+    <button type="button" class="btn btn-default"
+            (click)="cvPaging.moveToNextPage()"
+            [disabled]="cvPaging.pageIndex >= cvPaging.pageCount - 1">
+        <span class="glyphicon glyphicon-step-forward"></span>
+    </button>
+    <button type="button" class="btn btn-default"
+            (click)="cvPaging.moveToLastPage()"
+            [disabled]="cvPaging.pageIndex >= cvPaging.pageCount - 1">
+        <span class="glyphicon glyphicon-fast-forward"></span>
+    </button>
+</div>

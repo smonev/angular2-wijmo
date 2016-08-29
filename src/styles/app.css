@@ -1,0 +1,20 @@
+﻿.wj-flexgrid {
+    height: auto;
+    background-color: white;
+
+    cursor: default;
+    width: 700px;
+    margin: 30px auto;
+    display: block;
+
+}
+
+.wj-content {
+    border: none;
+}
+
+.btn-group {
+    width: 700px;
+    margin: 0px auto;
+    display: block;    
+}
