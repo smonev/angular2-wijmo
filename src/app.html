@@ -1,4 +1,4 @@
-﻿<wj-flex-grid [itemsSource]="cvPaging">
+﻿<wj-flex-grid #flex1 [itemsSource]="cvPaging">
     <wj-flex-grid-column [header]="'Country'" [binding]="'country'" [isReadOnly]="true">
         <template wjFlexGridCellTemplate [cellType]="'Cell'"  let-cell="cell">
             <div>
@@ -26,6 +26,16 @@
 
     </wj-flex-grid-column>
     <wj-flex-grid-column [header]="'Active'" [binding]="'active'"></wj-flex-grid-column>
+
+    <template wjFlexGridDetail [maxHeight]="250" [detailVisibilityMode]="'ExpandSingle'" let-item="item">
+        <wj-flex-grid [itemsSource]="getDetails(0, item.id)"
+                      [headersVisibility]="'Column'">
+            <wj-flex-grid-column [header]="'ID'" [binding]="'id'"></wj-flex-grid-column>
+            <wj-flex-grid-column [header]="'City'" [binding]="'city'"></wj-flex-grid-column>
+            <wj-flex-grid-column [header]="'Population'" [binding]="'population'"></wj-flex-grid-column>
+        </wj-flex-grid>
+    </template>
+
 </wj-flex-grid>
 
 <div class="btn-group">

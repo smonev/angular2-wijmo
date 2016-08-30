@@ -17,8 +17,8 @@ var core_1 = require('@angular/core');
 var common_1 = require('@angular/common');
 var platform_browser_dynamic_1 = require('@angular/platform-browser-dynamic');
 var wjNg2Grid = require('wijmo/wijmo.angular2.grid');
+var wjDetail = require('wijmo/wijmo.angular2.grid.detail');
 var wjNg2Input = require('wijmo/wijmo.angular2.input');
-var AppTab_1 = require('./components/AppTab');
 var DataSvc_1 = require('./services/DataSvc');
 'use strict';
 // The application root component.
@@ -31,7 +31,7 @@ var AppCmp = (function () {
     }
     AppCmp.prototype.loadData = function () {
         var _this = this;
-        setInterval(function () {
+        setTimeout(function () {
             _this.cvPaging = new wijmo.collections.CollectionView(_this.dataSvc.getSecondData(100));
             _this.cvPaging.pageSize = 10;
         }, 3000);
@@ -43,13 +43,26 @@ var AppCmp = (function () {
             return 'black';
         return 'darkgreen';
     };
+    AppCmp.prototype.getDetails = function (id, count) {
+        var cities = 'New York,Los Angeles,Chicago,Houston,Philadelphia,Phoenix'.split(','), data = new wijmo.collections.ObservableArray();
+        for (var i = 0; i < 5; i++) {
+            data.push({
+                id: i,
+                city: cities[i % cities.length],
+                // population: Math.random() * 10000,
+                population: 100 * i
+            });
+        }
+        return data;
+    };
     AppCmp = __decorate([
         core_1.Component({
             selector: 'app-cmp',
             templateUrl: 'src/app.html',
-            directives: [common_1.CORE_DIRECTIVES, AppTab_1.AppTab, AppTab_1.AppTabPane,
-                wjNg2Grid.WjFlexGrid, wjNg2Grid.WjFlexGridColumn, wjNg2Grid.WjFlexGridCellTemplate,
-                wjNg2Input.WjInputNumber, wjNg2Input.WjMenu, wjNg2Input.WjMenuItem]
+            directives: [common_1.CORE_DIRECTIVES,
+                wjNg2Grid.WjFlexGrid, wjNg2Grid.WjFlexGridColumn, wjNg2Grid.WjFlexGridCellTemplate, wjDetail.WjFlexGridDetail,
+                wjNg2Input.WjInputNumber, wjNg2Input.WjMenu, wjNg2Input.WjMenuItem, wjDetail.WjFlexGridDetail, wjNg2Grid.WjFlexGrid, wjNg2Grid.WjFlexGridColumn,
+                wjNg2Grid.WjFlexGridCellTemplate, wjNg2Input.WjMenu, wjNg2Input.WjMenuItem]
         }),
         __param(0, core_1.Inject(DataSvc_1.DataSvc)), 
         __metadata('design:paramtypes', [DataSvc_1.DataSvc])
