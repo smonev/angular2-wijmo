@@ -36,6 +36,28 @@ var AppCmp = (function () {
             _this.cvPaging.pageSize = 10;
         }, 3000);
     };
+    AppCmp.prototype.ngAfterViewInit = function () {
+        if (this.flex1) {
+            this._initDetailProvider(this.flex1);
+        }
+    };
+    AppCmp.prototype._initDetailProvider = function (grid) {
+        var _this = this;
+        var dp = new wijmo.grid.detail.FlexGridDetailProvider(this.flex1);
+        dp.maxHeight = 250;
+        // create and host detail cells
+        dp.createDetailCell = function (row) {
+            var cell = document.createElement('div');
+            var detailGrid = new wijmo.grid.FlexGrid(cell);
+            detailGrid.itemsSource = _this.getDetails(row.dataItem.id, 5);
+            detailGrid.headersVisibility = wijmo.grid.HeadersVisibility.Column;
+            return cell;
+        };
+        // remove details from items with odd CategoryID
+        dp.rowHasDetail = function (row) {
+            return row.dataItem.id % 3 == 0;
+        };
+    };
     AppCmp.prototype.getAmountColor = function (amount) {
         if (amount < 500)
             return 'darkred';
@@ -49,12 +71,15 @@ var AppCmp = (function () {
             data.push({
                 id: i,
                 city: cities[i % cities.length],
-                // population: Math.random() * 10000,
-                population: 100 * i
+                population: Math.random() * 10000
             });
         }
         return data;
     };
+    __decorate([
+        core_1.ViewChild('flex1'), 
+        __metadata('design:type', wijmo.grid.FlexGrid)
+    ], AppCmp.prototype, "flex1", void 0);
     AppCmp = __decorate([
         core_1.Component({
             selector: 'app-cmp',

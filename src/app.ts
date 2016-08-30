@@ -21,17 +21,16 @@ import { DataSvc } from './services/DataSvc';
         wjNg2Grid.WjFlexGridCellTemplate, wjNg2Input.WjMenu, wjNg2Input.WjMenuItem]
 })
 
-export class AppCmp {
+export class AppCmp implements AfterViewInit {
     protected dataSvc: DataSvc;
     cvPaging: wijmo.collections.CollectionView;
+    @ViewChild('flex1') flex1: wijmo.grid.FlexGrid;
 
     constructor( @Inject(DataSvc) dataSvc: DataSvc) {
         this.dataSvc = dataSvc;
-        
         this.cvPaging = new wijmo.collections.CollectionView(this.dataSvc.getFirstData(100));
         this.cvPaging.pageSize = 10;
         this.loadData();        
-
     }
 
     loadData () {
@@ -40,6 +39,29 @@ export class AppCmp {
             this.cvPaging.pageSize = 10;
         }, 3000);
     }
+
+    ngAfterViewInit() {
+        if (this.flex1) {
+            this._initDetailProvider(this.flex1);
+        }
+    }
+
+    private _initDetailProvider(grid: wijmo.grid.FlexGrid) {
+        var dp = new wijmo.grid.detail.FlexGridDetailProvider(this.flex1);
+        dp.maxHeight = 250;
+        // create and host detail cells
+        dp.createDetailCell = (row) => {
+            var cell = document.createElement('div');
+            var detailGrid = new wijmo.grid.FlexGrid(cell);
+            detailGrid.itemsSource = this.getDetails(row.dataItem.id, 5);
+            detailGrid.headersVisibility = wijmo.grid.HeadersVisibility.Column;
+            return cell;
+        }
+        // remove details from items with odd CategoryID
+        dp.rowHasDetail = function (row) {
+            return row.dataItem.id % 3 == 0;
+        }
+    }    
 
     getAmountColor(amount: number) {
         if (amount < 500) return 'darkred';
@@ -54,13 +76,11 @@ export class AppCmp {
                 data.push({
                     id: i,
                     city: cities[i % cities.length],
-                    // population: Math.random() * 10000,
-                    population: 100 * i
+                    population: Math.random() * 10000
                 });
             }
             return data;
     }
-   
 }
 
 enableProdMode();
